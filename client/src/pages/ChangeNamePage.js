@@ -74,7 +74,7 @@ export const ChangeNamePage = () => {
                 <Button style={{width:100, backgroundColor:'#340abf', marginTop:30}}
                         color="secondary"
                         variant="contained"
-                        //onClick={() => saveHandler()}
+                        onClick={() => saveHandler()}
                         disabled={loading}>
                     Save changes
                 </Button>

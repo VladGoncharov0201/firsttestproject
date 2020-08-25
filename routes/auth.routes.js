@@ -43,7 +43,7 @@ router.post(
                     return res.status(400).json({message: 'Такой пользователь уже существует'})
                 } if (result.rowCount === 0){
                     const values = [email, hashedPassword]
-                    const insertpeople = 'INSERT INTO users.users(email, password) VALUES($1, $2) RETURNING *'
+                    const insertpeople = 'INSERT INTO users.users (email, password) VALUES($1, $2) RETURNING *'
                     client.query(insertpeople, values, function insert(err, result) {
                         if (result) {
                             return res.status(201).json({message: 'Пользователь сохранен'})
@@ -92,11 +92,11 @@ router.post('/login',
                             return res.status(400).json({message: 'Вы ввели неверные данные'})
                         } if (result === true){
                             const token = jwt.sign(
-                                {userId: user.id},
+                                {userId: email},
                                 config.get('jwtSecret'),
                                 {expiresIn: '1h'}
                             )
-                            return res.status(200).json({token, message: 'Пользователь найден'})
+                            return res.json({jwt: token, userId: email})
                         }
                     })
                     } else {

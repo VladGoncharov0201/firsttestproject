@@ -28,30 +28,32 @@ async function start() {
 
         const hashedPassword = await bcrypt.hash('admin', 12)
 
-        await client.query(createTable, (err) => {
-            if (err) {
-                const text = 'INSERT INTO users.users(email, password, name) VALUES($1, $2, $3) RETURNING *'
-                const values = ['admin@admin.com', hashedPassword, 'admin']
-                client.query(text, values, (err, res) => {
-                    if (res) {
-                        console.log(res.rows)
-                    } else {
-                        console.log(err.stack)
-                    }
-                })
-
-            } else {
-                const SelectTable = "SELECT * FROM users.users"
-                client.query(SelectTable, (err, res) => {
-                    if (res) {
-                        console.log(res.rows)
-                    } else {
-                        console.log(err.stack)
-                    }
-                })
+        await client.query(createTable, (err, res) => {
+            if (res){
+                if (res.rowCount === 0) {
+                    const text = 'INSERT INTO users.users (email, password, name) VALUES($1, $2, $3) RETURNING *'
+                    const values = ['admin@admin.com', hashedPassword, 'admin']
+                    client.query(text, values, (err, res) => {
+                        if (res) {
+                            console.log(res.rows)
+                        } else {
+                            console.log(err.stack)
+                        }
+                    })
+                } else {
+                    const SelectTable = "SELECT * FROM users.users"
+                    client.query(SelectTable, (err, res) => {
+                        if (res) {
+                            console.log(res.rows)
+                        } else {
+                            console.log(err.stack)
+                        }
+                    })
+                }
+            } if (err) {
+                console.log("Server Error", err.message)
             }
         })
-
 
         app.listen(PORT, () => console.log('App has been started on port ' + PORT))
 
