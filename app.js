@@ -22,34 +22,30 @@ async function start() {
         })
         client.connect()
 
-        const createTable = "CREATE TABLE IF NOT EXISTS users.users (email varchar(50), " +
-            "password varchar(50), " +
-            "name varchar(50))"
+        const createTable = "CREATE TABLE IF NOT EXISTS users.users (email varchar(255), " +
+            "password varchar(255), " +
+            "name varchar(255))"
 
         const hashedPassword = await bcrypt.hash('admin', 12)
 
         await client.query(createTable, (err, res) => {
-            if (res){
-                if (res.rowCount === null) {
-                    const text = 'INSERT INTO users.users (email, password, name) VALUES($1, $2, $3) RETURNING *'
-                    const values = ['admin@admin.com', hashedPassword, 'admin']
-                    client.query(text, values, (err, res) => {
-                        if (res) {
-                            console.log(res.rows)
+            if (res) {
+                const SelectTable = "SELECT * FROM users.users"
+                client.query(SelectTable, (err, res) => {
+                    if (res) {
+                        if (res.rowCount === 0) {
+                            const text = 'INSERT INTO users.users (email, password, name) VALUES($1, $2, $3) RETURNING *'
+                            const values = ['admin@admin.com', hashedPassword, 'admin']
+                            client.query(text, values, (err, res) => {
+                                if (res) {
+                                    console.log(res.rows)
+                                }
+                            })
                         } else {
-                            console.log(err.stack)
-                        }
-                    })
-                } else {
-                    const SelectTable = "SELECT * FROM users.users"
-                    client.query(SelectTable, (err, res) => {
-                        if (res) {
                             console.log(res.rows)
-                        } else {
-                            console.log(err.stack)
                         }
-                    })
-                }
+                    }
+                })
             } if (err) {
                 console.log("Server Error", err.message)
             }

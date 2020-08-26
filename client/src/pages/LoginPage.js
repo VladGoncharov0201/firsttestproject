@@ -94,12 +94,12 @@ export const LoginPage = () => {
     const registerHandler = async () => {
         try{
             const data = await request('/api/auth/register', 'POST', {...form})
-            auth.login(data.jwt)
+            auth.login(data.token, data.userId)
         }catch (e) {}
     }
 
     return(
-        <Card className={classes.root} variant="outlined">
+        <Card className={classes.root} variant="outlined" style={{margin: "auto"}}>
             <CardContent style={{
                 alignItems:'center',
                 justifyContent:'center'}}>

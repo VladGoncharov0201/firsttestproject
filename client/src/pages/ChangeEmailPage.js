@@ -50,7 +50,7 @@ export const ChangeEmailPage = () => {
     const classes = useStyles()
 
     return(
-        <Card className={classes.root} variant="outlined">
+        <Card className={classes.root} variant="outlined" style={{margin: "auto"}}>
             <CardContent style={{
                 alignItems:'center',
                 justifyContent:'center'}}>
