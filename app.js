@@ -30,7 +30,7 @@ async function start() {
 
         await client.query(createTable, (err, res) => {
             if (res){
-                if (res.rowCount === 0) {
+                if (res.rowCount === null) {
                     const text = 'INSERT INTO users.users (email, password, name) VALUES($1, $2, $3) RETURNING *'
                     const values = ['admin@admin.com', hashedPassword, 'admin']
                     client.query(text, values, (err, res) => {
