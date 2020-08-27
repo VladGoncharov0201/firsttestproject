@@ -4,7 +4,6 @@ const config = require('config')
 const {check, validationResult} = require('express-validator')
 const router = Router()
 const jwt = require('jsonwebtoken')
-const user = require("pg");
 const { Client } = require('pg')
 const connectionString = config.get('connectionString')
 const client = new Client({
@@ -91,12 +90,13 @@ router.post('/login',
                         if (result === false) {
                             return res.status(400).json({message: 'Вы ввели неверные данные'})
                         } if (result === true){
+                            const privateKey = config.get('jwtSecret')
                             const token = jwt.sign(
                                 {userId: email},
-                                config.get('jwtSecret'),
-                                {expiresIn: '1h'}
+                                privateKey,
+                                {expiresIn: '12h'}
                             )
-                            return res.json({jwt: token, userId: email})
+                            return res.json({token, userId: email})
                         }
                     })
                     } else {

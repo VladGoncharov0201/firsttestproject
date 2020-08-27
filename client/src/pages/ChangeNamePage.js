@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
@@ -9,6 +9,7 @@ import {useHttp} from "../hooks/http.hook";
 import {useMessage} from "../hooks/message.hook";
 import {makeStyles} from "@material-ui/core/styles";
 import {NavLink} from "react-router-dom";
+import {AuthContext} from "../context/AuthContext";
 
 
 const useStyles = makeStyles(() => ({
@@ -22,6 +23,7 @@ const useStyles = makeStyles(() => ({
 }))
 
 export const ChangeNamePage = () => {
+    const auth = useContext(AuthContext)
     const {loading, error, request, clearError} =  useHttp()
     const message = useMessage()
 
@@ -40,7 +42,8 @@ export const ChangeNamePage = () => {
 
     const saveHandler = async () => {
         try{
-            const data = await request('/api/change/changename', 'POST', {...form})
+            const data = await request('/api/change/changename', 'POST', {...form},
+                {Authorization: 'Bearer ' + auth.token})
             console.log(data)
         }catch (e) {}
     }

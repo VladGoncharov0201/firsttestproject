@@ -2,16 +2,13 @@ const jwt = require('jsonwebtoken')
 const config = require('config')
 
 module.exports = (req, res, next) => {
+
     if (req.method === 'OPTIONS'){
         return next()
     }
 
     try {
-
-        const token = req.headers.authorization
-        console.log(token)
-
-        //const token = req.headers.authorization.split(' ')[1]
+        const token = req.headers.authorization.split(' ')[1]
 
         if (!token) {
             return res.status(401).json({message: 'Нет авторизации'})
@@ -19,6 +16,7 @@ module.exports = (req, res, next) => {
 
         const decoded = jwt.verify(token, config.get('jwtSecret'))
         req.user = decoded
+        console.log("User", req.user)
         next()
 
     } catch (e) {

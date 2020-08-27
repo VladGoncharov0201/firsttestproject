@@ -11,16 +11,18 @@ const auth = require('../middleware/auth.middleware')
 
 router.post('/changename', auth, async (req, res) => {
     try{
-        const {from} = req.body
+        const {name} = req.body
         const email = req.user.userId
 
-        const value = [email]
-        const somepeople = 'SELECT * FROM users.users WHERE email = $1'
-        client.query(somepeople, value, function check(err, result) {
-            if (result){
+        const value = [name, email]
+        const updatename = 'UPDATE users.users SET name = $1 WHERE email = $2'
+        client.query(updatename, value, function check(err, result) {
+            if (result) {
+                res.status(200).json({message: 'Данные успешно изменены'})
+            } else {
+                res.json({message: 'Возникла ошибка, попробуйте еще раз'})
             }
         })
-
     } catch (e) {
         res.status(500).json({message: 'Что-то пошло не так'})
     }
