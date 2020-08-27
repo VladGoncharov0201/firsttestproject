@@ -53,13 +53,14 @@ router.post('/changepassword', auth, async (req, res) => {
         const {oldpassword, password} = req.body
         const authemail = req.user.userId
 
-        const hashedPassword = await bcrypt.hash(oldpassword, 12)
+        const hashedoldPassword = await bcrypt.hash(oldpassword, 12)
+        const hashednewPassword = await bcrypt.hash(password, 12)
 
-        const value = [password, authemail, hashedPassword]
-        const updateemail = 'UPDATE users.users SET email = $1 WHERE email = $2 and password = $3'
-        client.query(updateemail, value, function check(err, result) {
+        const value = [hashednewPassword, authemail, hashedoldPassword]
+        const updatepassword = 'UPDATE users.users SET email = $1 WHERE email = $2 and password = $3'
+        client.query(updatepassword, value, function check(err, result) {
             if (result) {
-                res.status(200).json({message: 'Email успешно изменен'})
+                res.status(200).json({message: 'Пароль успешно изменен'})
             } else {
                 res.json({message: 'Возникла ошибка, попробуйте еще раз'})
             }
