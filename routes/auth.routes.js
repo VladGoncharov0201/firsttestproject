@@ -1,5 +1,5 @@
 const {Router} = require('express')
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt')
 const config = require('config')
 const {check, validationResult} = require('express-validator')
 const router = Router()

@@ -1,22 +1,23 @@
-import React, {useEffect, useState} from "react";
-import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
-import TextField from "@material-ui/core/TextField";
-import CardActions from "@material-ui/core/CardActions";
-import Button from "@material-ui/core/Button";
-import Card from "@material-ui/core/Card";
-import {useHttp} from "../hooks/http.hook";
-import {useMessage} from "../hooks/message.hook";
-import {makeStyles} from "@material-ui/core/styles";
-import clsx from "clsx";
-import InputLabel from "@material-ui/core/InputLabel";
-import OutlinedInput from "@material-ui/core/OutlinedInput";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import IconButton from "@material-ui/core/IconButton";
-import Visibility from "@material-ui/icons/Visibility";
-import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import FormControl from "@material-ui/core/FormControl";
-import {NavLink} from "react-router-dom";
+import React, {useContext, useEffect, useState} from "react"
+import CardContent from "@material-ui/core/CardContent"
+import Typography from "@material-ui/core/Typography"
+import TextField from "@material-ui/core/TextField"
+import CardActions from "@material-ui/core/CardActions"
+import Button from "@material-ui/core/Button"
+import Card from "@material-ui/core/Card"
+import {useHttp} from "../hooks/http.hook"
+import {useMessage} from "../hooks/message.hook"
+import {makeStyles} from "@material-ui/core/styles"
+import clsx from "clsx"
+import InputLabel from "@material-ui/core/InputLabel"
+import OutlinedInput from "@material-ui/core/OutlinedInput"
+import InputAdornment from "@material-ui/core/InputAdornment"
+import IconButton from "@material-ui/core/IconButton"
+import Visibility from "@material-ui/icons/Visibility"
+import VisibilityOff from "@material-ui/icons/VisibilityOff"
+import FormControl from "@material-ui/core/FormControl"
+import {NavLink} from "react-router-dom"
+import {AuthContext} from "../context/AuthContext"
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -47,7 +48,8 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export const ChangePasswordPage = () => {
-    const {loading, error, clearError} =  useHttp()
+    const auth = useContext(AuthContext)
+    const {loading, error, request, clearError} =  useHttp()
     const message = useMessage()
 
     const [values, setValues] = useState({
@@ -82,6 +84,14 @@ export const ChangePasswordPage = () => {
     }
 
     const classes = useStyles()
+
+    const saveHandler = async () => {
+        try{
+            const data = await request('/api/change/changepassword', 'POST', {...form},
+                {Authorization: 'Bearer ' + auth.token})
+            console.log(data)
+        }catch (e) {}
+    }
 
     return(
         <Card className={classes.root} variant="outlined" style={{margin: "auto"}}>
@@ -129,7 +139,7 @@ export const ChangePasswordPage = () => {
                 <Button style={{width:100, backgroundColor:'#340abf', marginTop:30}}
                         color="secondary"
                         variant="contained"
-                        //onClick={() => }
+                        //onClick={() => saveHandler()}
                         disabled={loading}>
                     <NavLink style={{ color: '#f1f1f1'}} to="/main">Save changes</NavLink>
                 </Button>
