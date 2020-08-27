@@ -67,7 +67,7 @@ export const ChangePasswordPage = () => {
     };
 
     const [form, setForm] = useState({
-        email: '',
+        oldpassword: '',
         password: ''
     })
 
@@ -95,7 +95,7 @@ export const ChangePasswordPage = () => {
                     Change Password
                 </Typography>
                 <form className={classes.root} noValidate autoComplete="off">
-                    <TextField name="password" id="password" variant="outlined" onChange={changeHandler} />
+                    <TextField name="oldpassword" id="oldpassword" variant="outlined" onChange={changeHandler} />
                 </form>
             </CardContent>
             <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">

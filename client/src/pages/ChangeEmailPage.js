@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
@@ -9,6 +9,7 @@ import {useHttp} from "../hooks/http.hook";
 import {useMessage} from "../hooks/message.hook";
 import {makeStyles} from "@material-ui/core/styles";
 import {NavLink} from "react-router-dom";
+import {AuthContext} from "../context/AuthContext";
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -21,20 +22,12 @@ const useStyles = makeStyles(() => ({
 }))
 
 export const ChangeEmailPage = () => {
-    const {loading, error, clearError} =  useHttp()
+    const auth = useContext(AuthContext)
+    const {loading, error, request, clearError} =  useHttp()
     const message = useMessage()
 
-    const [setValues] = useState({
-        amount: '',
-        password: '',
-        weight: '',
-        weightRange: '',
-        showPassword: false,
-    });
-
     const [form, setForm] = useState({
-        email: '',
-        password: ''
+        email: ''
     })
 
     useEffect( () => {
@@ -44,10 +37,17 @@ export const ChangeEmailPage = () => {
 
     const changeHandler = event => {
         setForm({...form, [event.target.name]: event.target.value })
-        setValues({ ...form, [event.target.name]: event.target.value })
     }
 
     const classes = useStyles()
+
+    const saveHandler = async () => {
+        try{
+            const data = await request('/api/change/changeemail', 'POST', {...form},
+                {Authorization: 'Bearer ' + auth.token})
+            console.log(data)
+        }catch (e) {}
+    }
 
     return(
         <Card className={classes.root} variant="outlined" style={{margin: "auto"}}>
@@ -77,7 +77,7 @@ export const ChangeEmailPage = () => {
                 <Button style={{width:100, backgroundColor:'#340abf', marginTop:30}}
                         color="secondary"
                         variant="contained"
-                    //onClick={() => }
+                        onClick={() => saveHandler()}
                         disabled={loading}>
                     Save changes
                 </Button>
