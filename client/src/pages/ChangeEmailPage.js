@@ -70,7 +70,6 @@ export const ChangeEmailPage = () => {
                 <Button style={{width:100, backgroundColor:'#340abf', marginTop:30}}
                         color="secondary"
                         variant="contained"
-                        //onClick={() => }
                         disabled={loading}>
                     <NavLink style={{ color: '#f1f1f1'}} to="/main">Cancel</NavLink>
                 </Button>
@@ -79,7 +78,7 @@ export const ChangeEmailPage = () => {
                         variant="contained"
                         onClick={() => saveHandler()}
                         disabled={loading}>
-                    Save changes
+                    <NavLink style={{ color: '#f1f1f1'}} to="/main">Save changes</NavLink>
                 </Button>
             </CardActions>
         </Card>

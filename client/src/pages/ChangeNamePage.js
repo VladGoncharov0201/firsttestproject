@@ -79,7 +79,7 @@ export const ChangeNamePage = () => {
                         variant="contained"
                         onClick={() => saveHandler()}
                         disabled={loading}>
-                    Save changes
+                    <NavLink style={{ color: '#f1f1f1'}} to="/main">Save changes</NavLink>
                 </Button>
             </CardActions>
         </Card>
