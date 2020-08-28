@@ -44,7 +44,7 @@ export const ChangeNamePage = () => {
         try{
             const data = await request('/api/change/changename', 'POST', {...form},
                 {Authorization: 'Bearer ' + auth.token})
-            console.log(data)
+            return data.name
         }catch (e) {}
     }
 

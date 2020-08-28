@@ -1,12 +1,15 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import {Typography, IconButton} from "@material-ui/core"
-import Button from "@material-ui/core/Button";
-import {makeStyles} from "@material-ui/core/styles";
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import TextField from "@material-ui/core/TextField";
-import {NavLink} from "react-router-dom";
+import Button from "@material-ui/core/Button"
+import {makeStyles} from "@material-ui/core/styles"
+import AccountCircle from '@material-ui/icons/AccountCircle'
+import Paper from '@material-ui/core/Paper'
+import Grid from '@material-ui/core/Grid'
+import TextField from "@material-ui/core/TextField"
+import {NavLink} from "react-router-dom"
+import {AuthContext} from "../context/AuthContext";
+
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -26,6 +29,9 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export const MainPage = () => {
+    const auth = useContext(AuthContext)
+    const {email, name} = auth
+
     const classes = useStyles()
 
     const [open, setOpen] = React.useState(false);
@@ -67,7 +73,9 @@ export const MainPage = () => {
                             <Typography variant="h6">
                                 Name
                             </Typography>
-                            <TextField id="standard-basic" label="Name" />
+                            <Typography variant="subtitle1">
+                                {name}
+                            </Typography>
                             <Button onClick={() => { alert('clicked') }} color="primary">
                                 <div>
                                     <Button color="primary" onClick={handleClickOpen}>
@@ -78,7 +86,9 @@ export const MainPage = () => {
                             <Typography variant="h6">
                                 Email
                             </Typography>
-                            <TextField id="standard-basic" label="Email" />
+                            <Typography variant="subtitle1">
+                                {email}
+                            </Typography>
                             <Button onClick={() => { alert('clicked') }} color="primary">
                                 <NavLink to="/email">Change email</NavLink>
                             </Button>

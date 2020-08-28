@@ -87,14 +87,14 @@ export const LoginPage = () => {
     const loginHandler = async () => {
         try{
             const data = await request('/api/auth/login', 'POST', {...form})
-            auth.login(data.token, data.userId)
+            auth.login(data.token, data.userId, data.email, data.name)
         }catch (e) {}
     }
 
     const registerHandler = async () => {
         try{
             const data = await request('/api/auth/register', 'POST', {...form})
-            auth.login(data.token, data.userId)
+            console.log(data)
         }catch (e) {}
     }
 

@@ -82,6 +82,7 @@ router.post('/login',
         const somepeople = 'SELECT * FROM users.users WHERE email = $1'
         client.query(somepeople, value, function check(err, result) {
             if (result){
+                const {email, name} = result.rows[0]
                 if (result.rowCount === 0){
                     return res.status(400).json({message: 'Пользователь не найден'})
                 } if (result.rowCount === 1){
@@ -96,7 +97,7 @@ router.post('/login',
                                 privateKey,
                                 {expiresIn: '12h'}
                             )
-                            return res.json({token, userId: email})
+                            return res.json({token, userId: email, email, name})
                         }
                     })
                     } else {
