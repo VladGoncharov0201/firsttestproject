@@ -26,6 +26,7 @@ export const ChangeNamePage = () => {
     const auth = useContext(AuthContext)
     const {loading, error, request, clearError} =  useHttp()
     const message = useMessage()
+    const {email} = auth
 
     const [form, setForm] = useState({
         name: ''
@@ -44,7 +45,7 @@ export const ChangeNamePage = () => {
         try{
             const data = await request('/api/change/changename', 'POST', {...form},
                 {Authorization: 'Bearer ' + auth.token})
-            return data.name
+            auth.logout()
         }catch (e) {}
     }
 
@@ -79,7 +80,7 @@ export const ChangeNamePage = () => {
                         variant="contained"
                         onClick={() => saveHandler()}
                         disabled={loading}>
-                    <NavLink style={{ color: '#f1f1f1'}} to="/main">Save changes</NavLink>
+                    <NavLink style={{ color: '#f1f1f1'}} to="/auth">Save changes</NavLink>
                 </Button>
             </CardActions>
         </Card>

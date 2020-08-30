@@ -89,7 +89,7 @@ export const ChangePasswordPage = () => {
         try{
             const data = await request('/api/change/changepassword', 'POST', {...form},
                 {Authorization: 'Bearer ' + auth.token})
-            console.log(data)
+            auth.logout()
         }catch (e) {}
     }
 
@@ -141,7 +141,7 @@ export const ChangePasswordPage = () => {
                         variant="contained"
                         onClick={() => saveHandler()}
                         disabled={loading}>
-                    <NavLink style={{ color: '#f1f1f1'}} to="/main">Save changes</NavLink>
+                    <NavLink style={{ color: '#f1f1f1'}} to="/auth">Save changes</NavLink>
                 </Button>
             </CardActions>
         </Card>

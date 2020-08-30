@@ -5,11 +5,8 @@ import {makeStyles} from "@material-ui/core/styles"
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
-import TextField from "@material-ui/core/TextField"
 import {NavLink} from "react-router-dom"
-import {AuthContext} from "../context/AuthContext";
-
-
+import {AuthContext} from "../context/AuthContext"
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -33,11 +30,10 @@ export const MainPage = () => {
     const {email, name} = auth
 
     const classes = useStyles()
-
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = React.useState(false)
 
     const handleClickOpen = () => {
-        setOpen(true);
+        setOpen(true)
     };
 
     return(
