@@ -26,7 +26,6 @@ export const ChangeNamePage = () => {
     const auth = useContext(AuthContext)
     const {loading, error, request, clearError} =  useHttp()
     const message = useMessage()
-    const {email} = auth
 
     const [form, setForm] = useState({
         name: ''

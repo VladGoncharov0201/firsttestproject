@@ -78,4 +78,5 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 ## Server
 
 Server was written with Node.js and using database PostgreSQL. When you start the project it will create a table and if 
-the table is empty programme adds first client "admin".
+the table is empty programme adds first client "admin". In the database I created a new schema "users".
+To connect to the database, I used pgAdmin 4. PgAdmin 4 can be downloaded on the [website](https://www.pgadmin.org/download/).
