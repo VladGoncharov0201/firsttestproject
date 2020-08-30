@@ -6,7 +6,7 @@
 * [Client](#client)
 * [Server](#server)
 
-##About project
+## About project
 The project's task is to show the possibility to create app using Node.js, React, Material UI, PostgreSQL. 
 This app gives user the possibility to authorize and get into closed part of the app. 
 The app contains five pages: authorisation page, main page, and three pages where information could be changed.
