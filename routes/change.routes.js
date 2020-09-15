@@ -57,7 +57,7 @@ router.post('/changepassword', auth, async (req, res) => {
         const hashednewPassword = await bcrypt.hash(password, 12)
 
         const value = [hashednewPassword, authemail, hashedoldPassword]
-        const updatepassword = 'UPDATE users.users SET email = $1 WHERE email = $2 and password = $3'
+        const updatepassword = 'UPDATE users.users SET password = $1 WHERE email = $2 and password = $3'
         client.query(updatepassword, value, function check(err, result) {
             if (result) {
                 res.status(200).json({message: 'Пароль успешно изменен'})
