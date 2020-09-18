@@ -8,6 +8,8 @@ import {useHistory} from 'react-router-dom'
 import {AuthContext} from "../context/AuthContext";
 import {IconButton} from "@material-ui/core";
 import AccountCircle from "@material-ui/icons/AccountCircle";
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -24,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
 export const Navigationbar = () => {
     const history = useHistory()
     const auth = useContext(AuthContext)
+    const {name} = auth
 
     const logoutHandler = event => {
         event.preventDefault()
@@ -41,8 +44,7 @@ export const Navigationbar = () => {
                                 className={classes.title}>
                         LOGO</Typography>
                     <Typography variant="h6"
-                                style={{marginRight: 10}}
-                                className={classes.title}>
+                                style={{marginRight: 1280}}>
                         My Profile</Typography>
                     <div>
                         <IconButton
@@ -51,10 +53,11 @@ export const Navigationbar = () => {
                             aria-haspopup="true"
                             color="inherit">
                             <AccountCircle />
+                            <Typography variant="subtitle1">{name}</Typography>
                         </IconButton>
                     </div>
-                    <Button color="inherit" variant="contained">
-                        <a href="/auth" onClick={logoutHandler}>Logout</a>
+                    <Button>
+                        <a href="/auth" onClick={logoutHandler}><ExitToAppIcon style={{color: "#fdfdfd"}} /></a>
                     </Button>
                 </Toolbar>
             </AppBar>
