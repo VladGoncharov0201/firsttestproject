@@ -13,6 +13,8 @@ import MuiDialogTitle from '@material-ui/core/DialogTitle'
 import MuiDialogContent from '@material-ui/core/DialogContent'
 import MuiDialogActions from '@material-ui/core/DialogActions'
 import CloseIcon from '@material-ui/icons/Close'
+import PropTypes from 'prop-types';
+import {TextFields} from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -71,75 +73,103 @@ const DialogActions = withStyles((theme) => ({
   },
 }))(MuiDialogActions)
 
-
-
 function Changename(props) {
-  const {onClose, open} = props;
+  const {onClose, open, name} = props
+  console.log(props)
 
   const handleClose = () => {
-    onClose(false);
-  };
-    return (<div>
-      <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title-changename" open={open}>
-        <DialogTitle id="customized-dialog-title-changename" onClose={handleClose}>
-          Change name
-        </DialogTitle>
-        <DialogContent dividers>
-
-        </DialogContent>
-        <DialogActions>
-          <Button autoFocus onClick={handleClose} color="primary">
-            Save changes
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>)
+    onClose(false)
   }
 
-function Changeemail(props) {
-  const {onClose, open} = props;
+  const handleListItemClick = (value) => {
+    onClose(value)
+  }
+  return (
+      <div>
+        <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title-changename" open={open}>
+          <DialogTitle id="customized-dialog-title-changename" onClose={handleClose}>
+            Change name
+          </DialogTitle>
+          <DialogContent dividers>
 
-  const handleClose = () => {
-    onClose(false);
-  };
-  return (<div>
-    <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title-changeemail" open={open}>
-      <DialogTitle id="customized-dialog-title-changeemail" onClose={handleClose}>
-        Change email
-      </DialogTitle>
-      <DialogContent dividers>
-
-      </DialogContent>
-      <DialogActions>
-        <Button autoFocus onClick={handleClose} color="primary">
-          Save changes
-        </Button>
-      </DialogActions>
-    </Dialog>
-  </div>)
+          </DialogContent>
+          <DialogActions>
+            <Button autoFocus onClick={handleListItemClick} color="primary">
+              Save changes
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>)
+}
+Changename.propTypes = {
+  onClose: PropTypes.func.isRequired,
+  open: PropTypes.bool.isRequired,
+  name: PropTypes.string.isRequired,
 }
 
-function Changepassword(props) {
-  const {onClose, open} = props;
+function ChangeEmail(props) {
+  const {onClose, open, email} = props
 
   const handleClose = () => {
-    onClose(false);
-  };
-  return (<div>
-    <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title-changepassword" open={open}>
-      <DialogTitle id="customized-dialog-title-changepassword" onClose={handleClose}>
-        Change password
-      </DialogTitle>
-      <DialogContent dividers>
+    onClose(false)
+  }
 
-      </DialogContent>
-      <DialogActions>
-        <Button autoFocus onClick={handleClose} color="primary">
-          Save changes
-        </Button>
-      </DialogActions>
-    </Dialog>
-  </div>)
+  const handleListItemClick = (value) => {
+    onClose(value)
+  }
+  return (
+      <div>
+        <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title-changeemail" open={open}>
+          <DialogTitle id="customized-dialog-title-changeemail" onClose={handleClose}>
+            Change email
+          </DialogTitle>
+          <DialogContent dividers>
+
+          </DialogContent>
+          <DialogActions>
+            <Button autoFocus onClick={handleListItemClick} color="primary">
+              Save changes
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>)
+}
+ChangeEmail.propTypes = {
+  onClose: PropTypes.func.isRequired,
+  open: PropTypes.bool.isRequired,
+  email: PropTypes.string.isRequired,
+}
+
+function ChangePassword(props) {
+  const {onClose, open} = props
+
+  const handleClose = () => {
+    onClose(false)
+  }
+
+  const handleListItemClick = (value) => {
+    onClose(value)
+  }
+  return (
+      <div>
+        <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title-changepassword" open={open}>
+          <DialogTitle id="customized-dialog-title-changepassword" onClose={handleClose}>
+            Change password
+          </DialogTitle>
+          <DialogContent dividers>
+
+          </DialogContent>
+          <DialogActions>
+            <Button autoFocus onClick={handleListItemClick} color="primary">
+              Save changes
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>)
+}
+ChangePassword.propTypes = {
+  onClose: PropTypes.func.isRequired,
+  open: PropTypes.bool.isRequired,
 }
 
 
@@ -148,14 +178,34 @@ export const MainPage = () => {
   const {email, name} = auth
 
   const classes = useStyles()
-  const [open, setOpen] = React.useState(false)
+  const [openName, setNameOpen] = React.useState(false)
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const handleNameOpen = () => {
+    setNameOpen(true)
   }
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleNameClose = (value) => {
+    setNameOpen(false)
+  }
+
+  const [openEmail, setEmailOpen] = React.useState(false)
+
+  const handleEmailOpen = () => {
+    setEmailOpen(true)
+  }
+
+  const handleEmailClose = (value) => {
+    setEmailOpen(false)
+  }
+
+  const [openPassword, setPasswordOpen] = React.useState(false)
+
+  const handlePasswordOpen = () => {
+    setPasswordOpen(true)
+  }
+
+  const handlePasswordClose = (value) => {
+    setPasswordOpen(false)
   }
 
   return (
@@ -197,17 +247,17 @@ export const MainPage = () => {
 
                 <Typography variant="h6">Name</Typography>
                 <Typography variant="subtitle1">{name}</Typography>
-                <Button onClick={handleClickOpen}>Change name</Button>
-                <Changename open={open} onClose={handleClose}/>
+                <Button onClick={handleNameOpen}>Change name</Button>
+                <Changename onClose={handleNameClose} name={name} open={openName}/>
 
                 <Typography variant="h6">Email</Typography>
                 <Typography variant="subtitle1">{email}</Typography>
-                <Button onClick={handleClickOpen}>Change email</Button>
-                <Changeemail open={open} onClose={handleClose}/>
+                <Button onClick={handleEmailOpen}>Change email</Button>
+                <ChangeEmail onClose={handleEmailClose} email={email} open={openEmail}/>
 
                 <Typography variant="h6">Password</Typography>
-                <Button onClick={handleClickOpen}>Change password</Button>
-                <Changepassword open={open} onClose={handleClose}/>
+                <Button onClick={handlePasswordOpen}>Change password</Button>
+                <ChangePassword open={openPassword} onClose={handlePasswordClose}/>
 
               </Grid>
             </Paper>
@@ -216,3 +266,4 @@ export const MainPage = () => {
       </div>
   )
 }
+
