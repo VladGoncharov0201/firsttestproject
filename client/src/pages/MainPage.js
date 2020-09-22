@@ -34,7 +34,7 @@ import FormControl from "@material-ui/core/FormControl"
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrw: 1,
-    weight: 1920,
+    weight: 1280,
     hight: 1080,
   },
   menuButton: {

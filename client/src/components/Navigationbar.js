@@ -14,6 +14,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
+        weight: 1280
     },
     menuButton: {
         marginRight: theme.spacing(2),
