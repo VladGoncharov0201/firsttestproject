@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react"
+import React, {useContext, useEffect, useState} from "react"
 import { Typography, IconButton } from "@material-ui/core"
 import Button from "@material-ui/core/Button"
 import { makeStyles } from "@material-ui/core/styles"
@@ -20,14 +20,22 @@ import TextField from "@material-ui/core/TextField";
 import CardActions from "@material-ui/core/CardActions";
 import Card from "@material-ui/core/Card";
 import SaveIcon from '@material-ui/icons/Save';
-
 import {useHttp} from "../hooks/http.hook";
 import {useMessage} from "../hooks/message.hook";
 
+import clsx from "clsx"
+import InputLabel from "@material-ui/core/InputLabel"
+import OutlinedInput from "@material-ui/core/OutlinedInput"
+import InputAdornment from "@material-ui/core/InputAdornment"
+import Visibility from "@material-ui/icons/Visibility"
+import VisibilityOff from "@material-ui/icons/VisibilityOff"
+import FormControl from "@material-ui/core/FormControl"
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrw: 1,
+    weight: 1920,
+    hight: 1080,
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -86,10 +94,16 @@ function Changename(props) {
   const {onClose, open, name} = props
   const auth = useContext(AuthContext)
   const {loading, error, request, clearError} =  useHttp()
+  const message = useMessage()
 
   const [form, setForm] = useState({
     name: ''
   })
+
+  useEffect( () => {
+    message(error)
+    clearError()
+  }, [error, message, clearError])
 
   const handleClose = () => {
     onClose(false)
@@ -164,6 +178,9 @@ Changename.propTypes = {
 
 function ChangeEmail(props) {
   const {onClose, open, email} = props
+  const auth = useContext(AuthContext)
+  const {loading, error, request, clearError} =  useHttp()
+  const message = useMessage()
 
   const handleClose = () => {
     onClose(false)
@@ -172,20 +189,71 @@ function ChangeEmail(props) {
   const handleListItemClick = (value) => {
     onClose(value)
   }
+
+  const [form, setForm] = useState({
+    email: ''
+  })
+
+  useEffect( () => {
+    message(error)
+    clearError()
+  }, [error, message, clearError])
+
+  const changeHandler = event => {
+    setForm({...form, [event.target.name]: event.target.value })
+  }
+
+  const saveHandler = async () => {
+    try{
+      const data = await request('/api/change/changeemail', 'POST', {...form},
+          {Authorization: 'Bearer ' + auth.token})
+      auth.logout()
+    }catch (e) {}
+  }
+
   return (
       <div>
-        <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title-changeemail" open={open}>
-          <DialogTitle id="customized-dialog-title-changeemail" onClose={handleClose}>
-            Change email
-          </DialogTitle>
-          <DialogContent dividers>
-
-          </DialogContent>
-          <DialogActions>
-            <Button autoFocus onClick={handleListItemClick} color="primary">
-              Save changes
-            </Button>
-          </DialogActions>
+        <Dialog onClose={handleClose}
+                aria-labelledby="customized-dialog-title-changeemail"
+                open={open}>
+          <Card variant="outlined"
+                style={{margin: "auto", width: 300}}>
+            <CardContent style={{
+              alignItems:'center',
+              justifyContent:'center'}}>
+              <Typography style={{width: 275, marginLeft: 10, color: '#6a83cf'}}
+                          variant="outlined"
+                          component="h2"
+                          gutterBottom>
+                Change Email
+                <Button style={{marginLeft: 40}}
+                        color="secondary"
+                        onClick={handleClose}
+                        disabled={loading}>
+                  <CloseIcon style={{marginLeft: 30, color: '#484848'}} />
+                </Button>
+              </Typography>
+              <form style={{margin: "auto", width: 300, textAlign: "center"}} noValidate autoComplete="off">
+                <TextField style={{width: 250}}
+                           name="email"
+                           id="email"
+                           variant="outlined"
+                           onChange={changeHandler} />
+              </form>
+            </CardContent>
+            <CardActions style={{
+              alignItems:'center',
+              justifyContent:'center'}}>
+              <Button style={{backgroundColor:'#340abf', marginLeft:130}}
+                      color="secondary"
+                      variant="contained"
+                      onClick={saveHandler}
+                      disabled={loading}>
+                <SaveIcon />
+                Save
+              </Button>
+            </CardActions>
+          </Card>
         </Dialog>
       </div>)
 }
@@ -197,6 +265,9 @@ ChangeEmail.propTypes = {
 
 function ChangePassword(props) {
   const {onClose, open} = props
+  const auth = useContext(AuthContext)
+  const {loading, error, request, clearError} =  useHttp()
+  const message = useMessage()
 
   const handleClose = () => {
     onClose(false)
@@ -205,20 +276,103 @@ function ChangePassword(props) {
   const handleListItemClick = (value) => {
     onClose(value)
   }
+
+  const [values, setValues] = useState({
+    amount: '',
+    password: '',
+    weight: '',
+    weightRange: '',
+    showPassword: false,
+  });
+
+  const handleClickShowPassword = () => {
+    setValues({ ...values, showPassword: !values.showPassword })
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
+  const [form, setForm] = useState({
+    oldpassword: '',
+    password: ''
+  })
+
+  useEffect( () => {
+    message(error)
+    clearError()
+  }, [error, message, clearError])
+
+  const changeHandler = event => {
+    setForm({...form, [event.target.name]: event.target.value })
+    setValues({ ...form, [event.target.name]: event.target.value })
+  }
+
+  const saveHandler = async () => {
+    try{
+      const data = await request('/api/change/changepassword', 'POST', {...form},
+          {Authorization: 'Bearer ' + auth.token})
+      auth.logout()
+    }catch (e) {}
+  }
+
   return (
       <div>
-        <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title-changepassword" open={open}>
-          <DialogTitle id="customized-dialog-title-changepassword" onClose={handleClose}>
-            Change password
-          </DialogTitle>
-          <DialogContent dividers>
-
-          </DialogContent>
-          <DialogActions>
-            <Button autoFocus onClick={handleListItemClick} color="primary">
-              Save changes
-            </Button>
-          </DialogActions>
+        <Dialog onClose={handleClose}
+                aria-labelledby="customized-dialog-title-changepassword"
+                open={open}>
+          <Card variant="outlined" style={{margin: "auto", width: 300}}>
+            <CardContent style={{
+              alignItems:'center',
+              justifyContent:'center'}}>
+              <Typography style={{width: 275, marginLeft: 10, color: '#6a83cf'}}
+                          variant="outlined"
+                          component="h2"
+                          gutterBottom>
+                Change Password
+                <Button style={{marginLeft: 40}}
+                        color="secondary"
+                        onClick={handleClose}
+                        disabled={loading}>
+                  <CloseIcon style={{marginLeft: 30, color: '#484848'}} />
+                </Button>
+              </Typography>
+              <form style={{margin: "auto", width: 300, textAlign: "center"}} noValidate autoComplete="off">
+                <TextField name="oldpassword" id="oldpassword" variant="outlined" onChange={changeHandler} />
+              </form>
+            </CardContent>
+            <FormControl style={{fontSize: 25, width: '25ch'}} variant="outlined">
+              <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+              <OutlinedInput
+                  id="outlined-adornment-password"
+                  name="password"
+                  type={values.showPassword ? 'text' : 'password'}
+                  value={values.password}
+                  onChange={changeHandler}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                          edge="end">
+                        {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>} labelWidth={70}/>
+            </FormControl>
+            <CardActions style={{
+              alignItems:'center',
+              justifyContent:'center'}}>
+              <Button style={{backgroundColor:'#340abf', marginLeft:130}}
+                      color="secondary"
+                      variant="contained"
+                      onClick={saveHandler}
+                      disabled={loading}>
+                <SaveIcon />
+                Save
+              </Button>
+            </CardActions>
+          </Card>
         </Dialog>
       </div>)
 }
