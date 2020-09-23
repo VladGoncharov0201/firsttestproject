@@ -1,5 +1,4 @@
 const {Router} = require('express')
-const bcrypt = require('bcrypt')
 var CryptoJS = require("crypto-js")
 const config = require('config')
 const {check, validationResult} = require('express-validator')
@@ -32,8 +31,6 @@ router.post(
         }
 
         const {email, password} = req.body
-
-        //const hashedPassword = await bcrypt.hash(password, 12)
 
         const hashedPassword = CryptoJS.AES.encrypt(password, 'secret_key').toString()
 

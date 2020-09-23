@@ -1,7 +1,8 @@
 const express = require('express')
 const config = require('config')
 const {Client} = require('pg')
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt')
+var CryptoJS = require("crypto-js")
 
 const app = express()
 
@@ -26,7 +27,7 @@ async function start() {
             "password varchar(255), " +
             "name varchar(255))"
 
-        const hashedPassword = await bcrypt.hash('admin', 12)
+        const hashedPassword = CryptoJS.AES.encrypt('admin', 'secret_key').toString()
 
         await client.query(createTable, (err, res) => {
             if (res) {

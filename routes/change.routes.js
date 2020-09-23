@@ -1,5 +1,5 @@
 const {Router} = require('express')
-const bcrypt = require('bcrypt')
+var CryptoJS = require("crypto-js")
 const router = Router()
 const config = require('config')
 const { Client } = require('pg')
@@ -53,38 +53,33 @@ router.post('/changepassword', auth, async (req, res) => {
         const {oldpassword, password} = req.body
         const authemail = req.user.userId
 
-        //const hashedoldPassword = await bcrypt.hash(oldpassword, 12)
-        const hashednewPassword = await bcrypt.hash(password, 12)
+        const hashednewPassword = CryptoJS.AES.encrypt(password, 'secret_key').toString()
 
-        const value = [hashednewPassword, authemail]
-        const updatepassword = 'UPDATE users.users SET password = $1 WHERE email = $2'
-        client.query(updatepassword, value, function check(err, result) {
-            if (result) {
-                return res.status(200).json({message: 'Пароль успешно изменен'})
-            } else {
-                res.json({message: 'Возникла ошибка, попробуйте еще раз'})
-            }
-        })
-
-        /*
         const value = [authemail]
         const somepeople = 'SELECT * FROM users.users WHERE email = $1'
         client.query(somepeople, value, function check(err, result) {
                 if (result){
                     const {password} = result.rows[0]
-                    bcrypt.compare(oldpassword, password, function(err, result) {
-                        if (result === false) {
-                            return res.status(400).json({message: 'Вы ввели неверные пароль'})
-                        } if (result === true){
-                            return res.status(200).json({message: 'Пароль был успешно изменен'})
-                        }
-                    })
+                    const passwordforcheckindb = CryptoJS.AES.decrypt(password, 'secret_key')
+                    const originalpassword = passwordforcheckindb.toString(CryptoJS.enc.Utf8)
+                    if (originalpassword === oldpassword) {
+                        const value = [hashednewPassword, authemail]
+                        const updatepassword = 'UPDATE users.users SET password = $1 WHERE email = $2'
+                        client.query(updatepassword, value, function check(err, result) {
+                            if (result){
+                                return res.status(200).json({message: 'Пароль успешно изменен'})
+                            } else{
+                                return res.status(500).json({message: 'Что-то пошло не так, пароль не был изменен'})
+                            }
+                        })
+                    } if (originalpassword !== oldpassword){
+                        return res.status(400).json({message: 'Введен неверный пароль'})
+                    }
                 } else {
                     return res.status(500).json({message: 'Что-то пошло не так'})
                 }
             }
         )
-        */
     } catch (e) {
         res.status(500).json({message: 'Что-то пошло не так'})
     }
