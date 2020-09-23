@@ -53,18 +53,38 @@ router.post('/changepassword', auth, async (req, res) => {
         const {oldpassword, password} = req.body
         const authemail = req.user.userId
 
-        const hashedoldPassword = await bcrypt.hash(oldpassword, 12)
+        //const hashedoldPassword = await bcrypt.hash(oldpassword, 12)
         const hashednewPassword = await bcrypt.hash(password, 12)
 
-        const value = [hashednewPassword, authemail, hashedoldPassword]
-        const updatepassword = 'UPDATE users.users SET password = $1 WHERE email = $2 and password = $3'
+        const value = [hashednewPassword, authemail]
+        const updatepassword = 'UPDATE users.users SET password = $1 WHERE email = $2'
         client.query(updatepassword, value, function check(err, result) {
             if (result) {
-                res.status(200).json({message: 'Пароль успешно изменен'})
+                return res.status(200).json({message: 'Пароль успешно изменен'})
             } else {
                 res.json({message: 'Возникла ошибка, попробуйте еще раз'})
             }
         })
+
+        /*
+        const value = [authemail]
+        const somepeople = 'SELECT * FROM users.users WHERE email = $1'
+        client.query(somepeople, value, function check(err, result) {
+                if (result){
+                    const {password} = result.rows[0]
+                    bcrypt.compare(oldpassword, password, function(err, result) {
+                        if (result === false) {
+                            return res.status(400).json({message: 'Вы ввели неверные пароль'})
+                        } if (result === true){
+                            return res.status(200).json({message: 'Пароль был успешно изменен'})
+                        }
+                    })
+                } else {
+                    return res.status(500).json({message: 'Что-то пошло не так'})
+                }
+            }
+        )
+        */
     } catch (e) {
         res.status(500).json({message: 'Что-то пошло не так'})
     }

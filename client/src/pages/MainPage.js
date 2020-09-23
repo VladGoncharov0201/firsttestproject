@@ -5,7 +5,6 @@ import { makeStyles } from "@material-ui/core/styles"
 import AccountCircle from "@material-ui/icons/AccountCircle"
 import Paper from "@material-ui/core/Paper"
 import Grid from "@material-ui/core/Grid"
-import { NavLink } from "react-router-dom"
 import { AuthContext } from "../context/AuthContext"
 import { withStyles } from '@material-ui/core/styles'
 import Dialog from '@material-ui/core/Dialog'
@@ -14,7 +13,6 @@ import MuiDialogContent from '@material-ui/core/DialogContent'
 import MuiDialogActions from '@material-ui/core/DialogActions'
 import CloseIcon from '@material-ui/icons/Close'
 import PropTypes from 'prop-types';
-import {TextFields} from "@material-ui/icons";
 import CardContent from "@material-ui/core/CardContent";
 import TextField from "@material-ui/core/TextField";
 import CardActions from "@material-ui/core/CardActions";
@@ -22,8 +20,6 @@ import Card from "@material-ui/core/Card";
 import SaveIcon from '@material-ui/icons/Save';
 import {useHttp} from "../hooks/http.hook";
 import {useMessage} from "../hooks/message.hook";
-
-import clsx from "clsx"
 import InputLabel from "@material-ui/core/InputLabel"
 import OutlinedInput from "@material-ui/core/OutlinedInput"
 import InputAdornment from "@material-ui/core/InputAdornment"
@@ -62,33 +58,6 @@ const styles = (theme) => ({
     color: theme.palette.grey[500],
   },
 });
-
-const DialogTitle = withStyles(styles)((props) => {
-  const { children, classes, onClose, ...other } = props
-  return (
-      <MuiDialogTitle disableTypography className={classes.root} {...other}>
-        <Typography variant="h6">{children}</Typography>
-        {onClose ? (
-            <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
-              <CloseIcon />
-            </IconButton>
-        ) : null}
-      </MuiDialogTitle>
-  )
-})
-
-const DialogContent = withStyles((theme) => ({
-  root: {
-    padding: theme.spacing(2),
-  },
-}))(MuiDialogContent)
-
-const DialogActions = withStyles((theme) => ({
-  root: {
-    margin: 0,
-    padding: theme.spacing(1),
-  },
-}))(MuiDialogActions)
 
 function Changename(props) {
   const {onClose, open, name} = props
@@ -330,36 +299,37 @@ function ChangePassword(props) {
                           component="h2"
                           gutterBottom>
                 Change Password
-                <Button style={{marginLeft: 40}}
-                        color="secondary"
-                        onClick={handleClose}
-                        disabled={loading}>
-                  <CloseIcon style={{marginLeft: 30, color: '#484848'}} />
-                </Button>
+              <Button style={{marginLeft: 10}}
+                      color="secondary"
+                      onClick={handleClose}
+                      disabled={loading}>
+                <CloseIcon style={{marginLeft: 30, color: '#484848'}} />
+              </Button>
               </Typography>
-              <form style={{margin: "auto", width: 300, textAlign: "center"}} noValidate autoComplete="off">
+              <form style={{fontSize: 25, width: 270, textAlign: "center"}} noValidate autoComplete="off">
                 <TextField name="oldpassword" id="oldpassword" variant="outlined" onChange={changeHandler} />
               </form>
+              <FormControl style={{width: 210, textAlign: "center", marginLeft: 30}}
+                           variant="outlined">
+                <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                <OutlinedInput
+                    id="outlined-adornment-password"
+                    name="password"
+                    type={values.showPassword ? 'text' : 'password'}
+                    value={values.password}
+                    onChange={changeHandler}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
+                            edge="end">
+                          {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                      </InputAdornment>} labelWidth={70}/>
+              </FormControl>
             </CardContent>
-            <FormControl style={{fontSize: 25, width: '25ch'}} variant="outlined">
-              <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-              <OutlinedInput
-                  id="outlined-adornment-password"
-                  name="password"
-                  type={values.showPassword ? 'text' : 'password'}
-                  value={values.password}
-                  onChange={changeHandler}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={handleClickShowPassword}
-                          onMouseDown={handleMouseDownPassword}
-                          edge="end">
-                        {values.showPassword ? <Visibility /> : <VisibilityOff />}
-                      </IconButton>
-                    </InputAdornment>} labelWidth={70}/>
-            </FormControl>
             <CardActions style={{
               alignItems:'center',
               justifyContent:'center'}}>

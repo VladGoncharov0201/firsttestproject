@@ -1,5 +1,6 @@
 const {Router} = require('express')
 const bcrypt = require('bcrypt')
+var CryptoJS = require("crypto-js")
 const config = require('config')
 const {check, validationResult} = require('express-validator')
 const router = Router()
@@ -32,7 +33,9 @@ router.post(
 
         const {email, password} = req.body
 
-        const hashedPassword = await bcrypt.hash(password, 12)
+        //const hashedPassword = await bcrypt.hash(password, 12)
+
+        const hashedPassword = CryptoJS.AES.encrypt(password, 'secret_key').toString()
 
         const value = [email]
         const somepeople = 'SELECT email FROM users.users WHERE email = $1'
@@ -87,19 +90,19 @@ router.post('/login',
                     return res.status(400).json({message: 'Пользователь не найден'})
                 } if (result.rowCount === 1){
                     const {password} = result.rows[0]
-                    bcrypt.compare(passwordforcheck, password, function(err, result) {
-                        if (result === false) {
-                            return res.status(400).json({message: 'Вы ввели неверные данные'})
-                        } if (result === true){
-                            const privateKey = config.get('jwtSecret')
-                            const token = jwt.sign(
-                                {userId: email},
-                                privateKey,
-                                {expiresIn: '12h'}
-                            )
-                            return res.json({token, userId: email, email, name})
-                        }
-                    })
+                    const passwordforcheckindb = CryptoJS.AES.decrypt(password, 'secret_key')
+                    const originalpassword = passwordforcheckindb.toString(CryptoJS.enc.Utf8)
+                    if (originalpassword === passwordforcheck) {
+                        const privateKey = config.get('jwtSecret')
+                        const token = jwt.sign(
+                            {userId: email},
+                            privateKey,
+                            {expiresIn: '12h'}
+                        )
+                        return res.json({token, userId: email, email, name})
+                    } else {
+                        return res.status(400).json({message: 'Неверный пароль'})
+                    }
                     } else {
                         console.log('Произошла ошибка, попробуйте еще раз')
                     }
