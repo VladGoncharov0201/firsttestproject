@@ -6,11 +6,7 @@ import AccountCircle from "@material-ui/icons/AccountCircle"
 import Paper from "@material-ui/core/Paper"
 import Grid from "@material-ui/core/Grid"
 import { AuthContext } from "../context/AuthContext"
-import { withStyles } from '@material-ui/core/styles'
 import Dialog from '@material-ui/core/Dialog'
-import MuiDialogTitle from '@material-ui/core/DialogTitle'
-import MuiDialogContent from '@material-ui/core/DialogContent'
-import MuiDialogActions from '@material-ui/core/DialogActions'
 import CloseIcon from '@material-ui/icons/Close'
 import PropTypes from 'prop-types';
 import CardContent from "@material-ui/core/CardContent";
@@ -26,6 +22,7 @@ import InputAdornment from "@material-ui/core/InputAdornment"
 import Visibility from "@material-ui/icons/Visibility"
 import VisibilityOff from "@material-ui/icons/VisibilityOff"
 import FormControl from "@material-ui/core/FormControl"
+import {useAuth} from "../hooks/auth.hook";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -90,6 +87,7 @@ function Changename(props) {
     try{
       const data = await request('/api/change/changename', 'POST', {...form},
           {Authorization: 'Bearer ' + auth.token})
+      const {name} = data
       auth.logout()
     }catch (e) {}
   }
@@ -115,7 +113,7 @@ function Changename(props) {
                   <CloseIcon style={{marginLeft: 30, color: '#484848'}} />
                 </Button>
               </Typography>
-              <form style={{margin: "auto", width: 300, textAlign: "center"}} noValidate autoComplete="off">
+              <form style={{margin: "auto", width: 270, textAlign: "center"}} noValidate autoComplete="off">
                 <TextField style={{width: 250}}
                            name="name"
                            id="name"
@@ -126,7 +124,7 @@ function Changename(props) {
             <CardActions style={{
               alignItems:'center',
               justifyContent:'center'}}>
-              <Button style={{backgroundColor:'#340abf', marginLeft:130}}
+              <Button style={{backgroundColor:'#340abf', marginLeft:165}}
                       color="secondary"
                       variant="contained"
                       onClick={saveHandler}
@@ -202,7 +200,7 @@ function ChangeEmail(props) {
                   <CloseIcon style={{marginLeft: 30, color: '#484848'}} />
                 </Button>
               </Typography>
-              <form style={{margin: "auto", width: 300, textAlign: "center"}} noValidate autoComplete="off">
+              <form style={{margin: "auto", width: 270, textAlign: "center"}} noValidate autoComplete="off">
                 <TextField style={{width: 250}}
                            name="email"
                            id="email"
@@ -213,7 +211,7 @@ function ChangeEmail(props) {
             <CardActions style={{
               alignItems:'center',
               justifyContent:'center'}}>
-              <Button style={{backgroundColor:'#340abf', marginLeft:130}}
+              <Button style={{backgroundColor:'#340abf', marginLeft:165}}
                       color="secondary"
                       variant="contained"
                       onClick={saveHandler}
