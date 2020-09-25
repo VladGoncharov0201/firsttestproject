@@ -22,7 +22,6 @@ import InputAdornment from "@material-ui/core/InputAdornment"
 import Visibility from "@material-ui/icons/Visibility"
 import VisibilityOff from "@material-ui/icons/VisibilityOff"
 import FormControl from "@material-ui/core/FormControl"
-import {useAuth} from "../hooks/auth.hook";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -101,7 +100,7 @@ function Changename(props) {
             <CardContent style={{
               alignItems:'center',
               justifyContent:'center'}}>
-              <Typography style={{width: 275, marginLeft: 10, color: '#6a83cf'}}
+              <Typography style={{width: 275, marginLeft: 10, color: '#036eb6'}}
                           variant="outlined"
                           component="h2"
                           gutterBottom>
@@ -115,6 +114,7 @@ function Changename(props) {
               </Typography>
               <form style={{margin: "auto", width: 270, textAlign: "center"}} noValidate autoComplete="off">
                 <TextField style={{width: 250}}
+                           label="Name"
                            name="name"
                            id="name"
                            variant="outlined"
@@ -124,7 +124,7 @@ function Changename(props) {
             <CardActions style={{
               alignItems:'center',
               justifyContent:'center'}}>
-              <Button style={{backgroundColor:'#340abf', marginLeft:165}}
+              <Button style={{backgroundColor:'#036eb6', marginLeft:165}}
                       color="secondary"
                       variant="contained"
                       onClick={saveHandler}
@@ -188,7 +188,7 @@ function ChangeEmail(props) {
             <CardContent style={{
               alignItems:'center',
               justifyContent:'center'}}>
-              <Typography style={{width: 275, marginLeft: 10, color: '#6a83cf'}}
+              <Typography style={{width: 275, marginLeft: 10, color: '#036eb6'}}
                           variant="outlined"
                           component="h2"
                           gutterBottom>
@@ -202,6 +202,7 @@ function ChangeEmail(props) {
               </Typography>
               <form style={{margin: "auto", width: 270, textAlign: "center"}} noValidate autoComplete="off">
                 <TextField style={{width: 250}}
+                           label="Email"
                            name="email"
                            id="email"
                            variant="outlined"
@@ -211,7 +212,7 @@ function ChangeEmail(props) {
             <CardActions style={{
               alignItems:'center',
               justifyContent:'center'}}>
-              <Button style={{backgroundColor:'#340abf', marginLeft:165}}
+              <Button style={{backgroundColor:'#036eb6', marginLeft:165}}
                       color="secondary"
                       variant="contained"
                       onClick={saveHandler}
@@ -292,7 +293,7 @@ function ChangePassword(props) {
             <CardContent style={{
               alignItems:'center',
               justifyContent:'center'}}>
-              <Typography style={{width: 275, marginLeft: 10, color: '#6a83cf'}}
+              <Typography style={{width: 275, marginLeft: 10, color: '#036eb6'}}
                           variant="outlined"
                           component="h2"
                           gutterBottom>
@@ -305,14 +306,14 @@ function ChangePassword(props) {
               </Button>
               </Typography>
               <form style={{fontSize: 25, width: 270, textAlign: "center"}} noValidate autoComplete="off">
-                <TextField name="oldpassword" id="oldpassword" variant="outlined" onChange={changeHandler} />
+                <TextField label="Current password" name="oldpassword" id="oldpassword" variant="outlined" onChange={changeHandler} />
               </form>
-              <FormControl style={{width: 210, textAlign: "center", marginLeft: 30}}
+              <FormControl style={{width: 210, textAlign: "center", marginLeft: 30, marginTop: 10}}
                            variant="outlined">
-                <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                <InputLabel htmlFor="outlined-adornment-password">New password</InputLabel>
                 <OutlinedInput
                     id="outlined-adornment-password"
-                    name="password"
+                    name="New password"
                     type={values.showPassword ? 'text' : 'password'}
                     value={values.password}
                     onChange={changeHandler}
@@ -331,7 +332,7 @@ function ChangePassword(props) {
             <CardActions style={{
               alignItems:'center',
               justifyContent:'center'}}>
-              <Button style={{backgroundColor:'#340abf', marginLeft:130}}
+              <Button style={{backgroundColor:'#036eb6', marginLeft:130}}
                       color="secondary"
                       variant="contained"
                       onClick={saveHandler}
@@ -424,16 +425,16 @@ export const MainPage = () => {
 
                 <Typography variant="h6">Name</Typography>
                 <Typography variant="subtitle1">{name}</Typography>
-                <Button onClick={handleNameOpen}>Change name</Button>
+                <Button style={{color: '#036eb6'}} onClick={handleNameOpen}>Change name</Button>
                 <Changename onClose={handleNameClose} name={name} open={openName}/>
 
                 <Typography variant="h6">Email</Typography>
                 <Typography variant="subtitle1">{email}</Typography>
-                <Button onClick={handleEmailOpen}>Change email</Button>
+                <Button style={{color: '#036eb6'}} onClick={handleEmailOpen}>Change email</Button>
                 <ChangeEmail onClose={handleEmailClose} email={email} open={openEmail}/>
 
                 <Typography variant="h6">Password</Typography>
-                <Button onClick={handlePasswordOpen}>Change password</Button>
+                <Button style={{color: '#036eb6'}} onClick={handlePasswordOpen}>Change password</Button>
                 <ChangePassword open={openPassword} onClose={handlePasswordClose}/>
 
               </Grid>
