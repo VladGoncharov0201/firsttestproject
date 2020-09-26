@@ -42,19 +42,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const styles = (theme) => ({
-  root: {
-    margin: 0,
-    padding: theme.spacing(2),
-  },
-  closeButton: {
-    position: 'absolute',
-    right: theme.spacing(1),
-    top: theme.spacing(1),
-    color: theme.palette.grey[500],
-  },
-});
-
 function Changename(props) {
   const {onClose, open, name} = props
   const auth = useContext(AuthContext)
@@ -349,7 +336,6 @@ ChangePassword.propTypes = {
   onClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
 }
-
 
 export const MainPage = () => {
   const auth = useContext(AuthContext)
