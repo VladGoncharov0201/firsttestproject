@@ -22,6 +22,10 @@ import InputAdornment from "@material-ui/core/InputAdornment"
 import Visibility from "@material-ui/icons/Visibility"
 import VisibilityOff from "@material-ui/icons/VisibilityOff"
 import FormControl from "@material-ui/core/FormControl"
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import {useHistory} from 'react-router-dom'
+import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,6 +41,11 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     height: 810,
+    padding: theme.spacing(2),
+    textAlign: "center",
+  },
+  paper2: {
+    height: 750,
     padding: theme.spacing(2),
     textAlign: "center",
   },
@@ -268,7 +277,7 @@ function ChangePassword(props) {
     try{
       const data = await request('/api/change/changepassword', 'POST', {...form},
           {Authorization: 'Bearer ' + auth.token})
-      auth.logout()
+      handleClose()
     }catch (e) {}
   }
 
@@ -301,7 +310,7 @@ function ChangePassword(props) {
                 <InputLabel htmlFor="outlined-adornment-password">New password</InputLabel>
                 <OutlinedInput
                     id="outlined-adornment-password"
-                    name="New password"
+                    name="password"
                     type={values.showPassword ? 'text' : 'password'}
                     value={values.password}
                     onChange={changeHandler}
@@ -346,6 +355,13 @@ export const MainPage = () => {
   const classes = useStyles()
   const [openName, setNameOpen] = React.useState(false)
 
+  const history = useHistory()
+  const logoutHandler = event => {
+    event.preventDefault()
+    auth.logout()
+    history.push('/auth')
+  }
+
   const handleNameOpen = () => {
     setNameOpen(true)
   }
@@ -375,60 +391,72 @@ export const MainPage = () => {
   }
 
   return (
-      <div className={classes.root}>
-        <Grid
-            container
-            direction="row"
-            justify="center"
-            alignItems="center"
-            spacing={2}>
-          <Grid item xs={2}>
-            <Paper
-                className={classes.paper}
-                style={{backgroundColor: "#3f51b5", color: "#fdfdfd"}}>
-              <div>
-                <IconButton
-                    aria-label="account of current user"
-                    aria-controls="menu-appbar"
-                    aria-haspopup="true"
-                    color="inherit">
-                  <AccountCircle/>
-                  <Typography
-                      variant="h6"
-                      style={{marginRight: 10}}
-                      className={classes.title}>
-                    Profile
-                  </Typography>
-                </IconButton>
-              </div>
-            </Paper>
-          </Grid>
-          <Grid item xs={10}>
-            <Paper className={classes.paper}>
-              <Grid
-                  container
-                  direction="column"
-                  justify="flex-start"
-                  alignItems="flex-start">
-
-                <Typography variant="h6">Name</Typography>
+      <div>
+        <AppBar position="static" style={{position: "static", width: "auto", marginLeft: 300, backgroundColor: "#224f75"}}>
+          <Toolbar>
+            <Typography variant="h6"
+                        style={{marginRight: 1300}}>
+              My Profile</Typography>
+            <div>
+              <IconButton
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  color="inherit">
+                <AccountCircle />
                 <Typography variant="subtitle1">{name}</Typography>
-                <Button style={{color: '#036eb6'}} onClick={handleNameOpen}>Change name</Button>
-                <Changename onClose={handleNameClose} name={name} open={openName}/>
+              </IconButton>
+            </div>
+            <Button>
+              <a href="/auth" onClick={logoutHandler}><ExitToAppIcon style={{color: "#fdfdfd"}} /></a>
+            </Button>
+          </Toolbar>
+        </AppBar>
+        <Paper
+            className={classes.paper}
+            style={{backgroundColor: "#036eb6", color: "#fdfdfd", width: 270, marginTop: -64}}>
+          <div>
+            <Typography variant="h6"
+                        style={{fontWeight: "fontWeightBold", fontSize: 30}}
+                        className={classes.title}>
+              LOGO</Typography>
+            <IconButton
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                color="inherit">
+              <AccountCircle/>
+              <Typography
+                  variant="h6"
+                  style={{marginRight: 10}}
+                  className={classes.title}>
+                Profile
+              </Typography>
+            </IconButton>
+          </div>
+        </Paper>
+        <Paper className={classes.paper2} style={{width: "auto", marginTop: -777, marginLeft: 304}}>
+          <Grid
+              container
+              direction="column"
+              justify="flex-start"
+              alignItems="flex-start">
 
-                <Typography variant="h6">Email</Typography>
-                <Typography variant="subtitle1">{email}</Typography>
-                <Button style={{color: '#036eb6'}} onClick={handleEmailOpen}>Change email</Button>
-                <ChangeEmail onClose={handleEmailClose} email={email} open={openEmail}/>
+            <Typography variant="h6">Name</Typography>
+            <Typography variant="subtitle1">{name}</Typography>
+            <Button style={{color: '#036eb6'}} onClick={handleNameOpen}>Change name</Button>
+            <Changename onClose={handleNameClose} name={name} open={openName}/>
 
-                <Typography variant="h6">Password</Typography>
-                <Button style={{color: '#036eb6'}} onClick={handlePasswordOpen}>Change password</Button>
-                <ChangePassword open={openPassword} onClose={handlePasswordClose}/>
+            <Typography variant="h6">Email</Typography>
+            <Typography variant="subtitle1">{email}</Typography>
+            <Button style={{color: '#036eb6'}} onClick={handleEmailOpen}>Change email</Button>
+            <ChangeEmail onClose={handleEmailClose} email={email} open={openEmail}/>
 
-              </Grid>
-            </Paper>
+            <Typography variant="h6">Password</Typography>
+            <Button style={{color: '#036eb6'}} onClick={handlePasswordOpen}>Change password</Button>
+            <ChangePassword open={openPassword} onClose={handlePasswordClose}/>
           </Grid>
-        </Grid>
+        </Paper>
       </div>
   )
 }

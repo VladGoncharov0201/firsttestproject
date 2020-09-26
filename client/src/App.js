@@ -4,7 +4,6 @@ import '@material-ui/core'
 import {useRoutes} from "./routes"
 import {useAuth} from "./hooks/auth.hook";
 import {AuthContext} from "./context/AuthContext";
-import {Navigationbar} from "./components/Navigationbar";
 import {Loader} from "./components/Loader";
 
 function App() {
@@ -21,7 +20,6 @@ function App() {
             token, login, logout, userId, email, name, isAuthenticated
         }}>
             <Router>
-                {isAuthenticated && <Navigationbar />}
                 <div className="container">
                     {routes}
                 </div>
