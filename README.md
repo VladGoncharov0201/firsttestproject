@@ -27,11 +27,10 @@ This project was written using the libraries:
 * pg (libraries for PostgreSQL),
 * express (web framework for Node.js),
 * nodemon (for editing of working project),
-* bcrypt (for encryption passwords),
+* crypto-js (for encryption passwords),
 * create-react-app (to create interface),
 * jsonwebtoken (for using token),
-* react-dom (for using routes),
-* clsx.
+* react-dom (for using routes).
 
 
 ## Client
