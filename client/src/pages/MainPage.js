@@ -74,7 +74,8 @@ function Changename(props) {
       const data = await request('/api/change/changename', 'POST', {...form},
           {Authorization: 'Bearer ' + auth.token})
       const {name} = data
-      auth.logout()
+      localStorage.setItem("Name", name)
+      handleClose()
     }catch (e) {}
   }
 
@@ -285,12 +286,12 @@ function ChangePassword(props) {
                           component="h2"
                           gutterBottom>
                 Change Password
-              <Button style={{marginLeft: 10}}
-                      color="secondary"
-                      onClick={handleClose}
-                      disabled={loading}>
-                <CloseIcon style={{marginLeft: 30, color: '#484848'}} />
-              </Button>
+                <Button style={{marginLeft: 10}}
+                        color="secondary"
+                        onClick={handleClose}
+                        disabled={loading}>
+                  <CloseIcon style={{marginLeft: 30, color: '#484848'}} />
+                </Button>
               </Typography>
               <form style={{fontSize: 25, width: 270, textAlign: "center"}} noValidate autoComplete="off">
                 <TextField label="Current password" name="oldpassword" id="oldpassword" variant="outlined" onChange={changeHandler} />
@@ -339,7 +340,8 @@ ChangePassword.propTypes = {
 
 export const MainPage = () => {
   const auth = useContext(AuthContext)
-  const {email, name} = auth
+  const {email} = auth
+  let name = localStorage.getItem("Name")
 
   const classes = useStyles()
   const [openName, setNameOpen] = React.useState(false)
