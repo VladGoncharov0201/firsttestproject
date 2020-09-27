@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from "react"
+import React, {useContext, useState} from "react"
 import CardContent from "@material-ui/core/CardContent"
 import Typography from "@material-ui/core/Typography"
 import TextField from "@material-ui/core/TextField"
@@ -14,7 +14,6 @@ import CardActions from "@material-ui/core/CardActions"
 import Button from "@material-ui/core/Button"
 import Card from "@material-ui/core/Card"
 import {useHttp} from "../hooks/http.hook"
-import {useMessage} from "../hooks/message.hook"
 import {makeStyles} from "@material-ui/core/styles"
 import {AuthContext} from "../context/AuthContext"
 
@@ -49,7 +48,6 @@ const useStyles = makeStyles((theme) => ({
 export const LoginPage = () => {
     const auth = useContext(AuthContext)
     const {loading, error, request, clearError} =  useHttp()
-    const message = useMessage()
 
     const [values, setValues] = useState({
                amount: '',
@@ -63,11 +61,6 @@ export const LoginPage = () => {
                email: '',
                password: ''
            })
-
-    useEffect( () => {
-        message(error)
-        clearError()
-    }, [error, message, clearError])
 
     const changeHandler = event => {
         setForm({...form, [event.target.name]: event.target.value })
@@ -94,7 +87,8 @@ export const LoginPage = () => {
     const registerHandler = async () => {
         try{
             const data = await request('/api/auth/register', 'POST', {...form})
-            console.log(data)
+            const {message} = data
+            alert(message)
         }catch (e) {}
     }
 

@@ -15,7 +15,6 @@ import CardActions from "@material-ui/core/CardActions";
 import Card from "@material-ui/core/Card";
 import SaveIcon from '@material-ui/icons/Save';
 import {useHttp} from "../hooks/http.hook";
-import {useMessage} from "../hooks/message.hook";
 import InputLabel from "@material-ui/core/InputLabel"
 import OutlinedInput from "@material-ui/core/OutlinedInput"
 import InputAdornment from "@material-ui/core/InputAdornment"
@@ -55,16 +54,10 @@ function Changename(props) {
   const {onClose, open, name} = props
   const auth = useContext(AuthContext)
   const {loading, error, request, clearError} =  useHttp()
-  const message = useMessage()
 
   const [form, setForm] = useState({
     name: ''
   })
-
-  useEffect( () => {
-    message(error)
-    clearError()
-  }, [error, message, clearError])
 
   const handleClose = () => {
     onClose(false)
@@ -82,8 +75,9 @@ function Changename(props) {
     try{
       const data = await request('/api/change/changename', 'POST', {...form},
           {Authorization: 'Bearer ' + auth.token})
-      const {name} = data
+      const {name, message} = data
       localStorage.setItem("Name", name)
+      alert(message)
       handleClose()
     }catch (e) {}
   }
@@ -144,7 +138,6 @@ function ChangeEmail(props) {
   const {onClose, open, email} = props
   const auth = useContext(AuthContext)
   const {loading, error, request, clearError} =  useHttp()
-  const message = useMessage()
 
   const handleClose = () => {
     onClose(false)
@@ -158,11 +151,6 @@ function ChangeEmail(props) {
     email: ''
   })
 
-  useEffect( () => {
-    message(error)
-    clearError()
-  }, [error, message, clearError])
-
   const changeHandler = event => {
     setForm({...form, [event.target.name]: event.target.value })
   }
@@ -171,7 +159,10 @@ function ChangeEmail(props) {
     try{
       const data = await request('/api/change/changeemail', 'POST', {...form},
           {Authorization: 'Bearer ' + auth.token})
-      auth.logout()
+      const {email, message} = data
+      localStorage.setItem("Email", email)
+      alert(message)
+      handleClose()
     }catch (e) {}
   }
 
@@ -232,7 +223,6 @@ function ChangePassword(props) {
   const {onClose, open} = props
   const auth = useContext(AuthContext)
   const {loading, error, request, clearError} =  useHttp()
-  const message = useMessage()
 
   const handleClose = () => {
     onClose(false)
@@ -263,11 +253,6 @@ function ChangePassword(props) {
     password: ''
   })
 
-  useEffect( () => {
-    message(error)
-    clearError()
-  }, [error, message, clearError])
-
   const changeHandler = event => {
     setForm({...form, [event.target.name]: event.target.value })
     setValues({ ...form, [event.target.name]: event.target.value })
@@ -277,6 +262,8 @@ function ChangePassword(props) {
     try{
       const data = await request('/api/change/changepassword', 'POST', {...form},
           {Authorization: 'Bearer ' + auth.token})
+      const {message} = data
+      alert(message)
       handleClose()
     }catch (e) {}
   }
@@ -349,8 +336,8 @@ ChangePassword.propTypes = {
 
 export const MainPage = () => {
   const auth = useContext(AuthContext)
-  const {email} = auth
   let name = localStorage.getItem("Name")
+  let email = localStorage.getItem("Email")
 
   const classes = useStyles()
   const [openName, setNameOpen] = React.useState(false)

@@ -38,9 +38,9 @@ router.post('/changeemail', auth, async (req, res) => {
         const updateemail = 'UPDATE users.users SET email = $1 WHERE email = $2'
         client.query(updateemail, value, function check(err, result) {
             if (result) {
-                res.status(200).json({message: 'Email успешно изменен'})
+                res.status(200).json({message: 'Email успешно изменен', email})
             } else {
-                res.json({message: 'Возникла ошибка, попробуйте еще раз', email})
+                res.json({message: 'Возникла ошибка, попробуйте еще раз'})
             }
         })
     } catch (e) {
