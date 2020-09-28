@@ -1,5 +1,5 @@
 const {Router} = require('express')
-var CryptoJS = require("crypto-js")
+let CryptoJS = require("crypto-js")
 const router = Router()
 const config = require('config')
 const { Client } = require('pg')

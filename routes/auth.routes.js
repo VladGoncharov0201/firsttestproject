@@ -1,5 +1,5 @@
 const {Router} = require('express')
-var CryptoJS = require("crypto-js")
+let CryptoJS = require("crypto-js")
 const config = require('config')
 const {check, validationResult} = require('express-validator')
 const router = Router()

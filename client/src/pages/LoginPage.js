@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
 
 export const LoginPage = () => {
     const auth = useContext(AuthContext)
-    const {loading, error, request, clearError} =  useHttp()
+    const {loading, request} =  useHttp()
 
     const [values, setValues] = useState({
                amount: '',

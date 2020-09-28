@@ -1,7 +1,7 @@
 const express = require('express')
 const config = require('config')
 const {Client} = require('pg')
-var CryptoJS = require("crypto-js")
+let CryptoJS = require("crypto-js")
 
 const app = express()
 

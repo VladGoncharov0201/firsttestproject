@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from "react"
+import React, {useContext, useState} from "react"
 import { Typography, IconButton } from "@material-ui/core"
 import Button from "@material-ui/core/Button"
 import { makeStyles } from "@material-ui/core/styles"
@@ -51,9 +51,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Changename(props) {
-  const {onClose, open, name} = props
+  const {onClose, open} = props
   const auth = useContext(AuthContext)
-  const {loading, error, request, clearError} =  useHttp()
+  const {loading, request} =  useHttp()
 
   const [form, setForm] = useState({
     name: ''
@@ -135,9 +135,9 @@ Changename.propTypes = {
 }
 
 function ChangeEmail(props) {
-  const {onClose, open, email} = props
+  const {onClose, open} = props
   const auth = useContext(AuthContext)
-  const {loading, error, request, clearError} =  useHttp()
+  const {loading, request} =  useHttp()
 
   const handleClose = () => {
     onClose(false)
@@ -222,7 +222,7 @@ ChangeEmail.propTypes = {
 function ChangePassword(props) {
   const {onClose, open} = props
   const auth = useContext(AuthContext)
-  const {loading, error, request, clearError} =  useHttp()
+  const {loading, request} =  useHttp()
 
   const handleClose = () => {
     onClose(false)
